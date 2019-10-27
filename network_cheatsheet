@@ -1,0 +1,116 @@
+*********************************************************
+************************ SOCKETS ************************
+*********************************************************
+
+int socket( int domain, int type, int protocol );
+
+domain:
+	Domain, or namespace, specifies a communication namespace in wich the
+	communication will take place. Specifie the Protocol Family that should be used.
+		PF_LOCAL	-> host/internal protocols
+		PF_INET		-> internet version 4 protocols (ipv4)
+		PF_INET6	-> internet version 6 protocols (ipv6)
+
+type:
+	Define what type of communication should be used.
+		SOCK_STREAM	->	reliable, sockets connection needed, data loss checking
+		SOCK_DGRAM	->	data loss possible, no packet checking, addressed packet
+						for each packet sent, no connection needed.
+
+protocol:
+	Specifies wich protocol to use. Most of the time set to 0, there is normally
+	only one protocol possible for combination of (domain + type). eg:
+		socket(PF_INET, SOCK_STREAM, [default to tcp protocol]);
+		socket(PF_INET, SOCK_DGRAM, [default to udp protocol]);
+
+******************
+ADDRESS / NAME:  *
+******************
+
+struct sockaddr {
+	__uint8_t	sa_len;			// total length
+	sa_family_t	sa_family;		// Address family, AF_* corresponding to the socket's
+								// namespace PF_* : PF_INET -> AF_INET, PF_LOCAL -> AF_LOCAL
+
+	char		sa_data[14];	// address value.
+}
+
+struct sockaddr_in {
+	__uint8_t		sin_len;		// total lenght
+	sa_family_t		sin_family;		// Address family, AF_INET for sockaddr_in
+	in_port_t		sin_port;		// port number
+	struct  in_addr	sin_addr;		// internet address in Network Byte Order ! htons()
+	char			sin_zero[8];	// just padding, set to 0 with memset
+};
+
+To give a socket an address, you need to bind() it with a struct representing the
+infos like port, ip address, etc. the struct to use depend on the socket domain, eg:
+
+	int sock = socket(PF_INET, SOCK_STREAM, 0);
+
+Here domain = PF_INET, so we know we need an internet version 4 address.
+PF_INET		-> struct sockaddr_in
+PF_INET6	-> struct sockaddr_in6
+PF_LOCAL	-> struct sockaddr_un
+
+struct sockaddr_in is the one, so we fill it and then cast this struct to
+(struct sockaddr *) when we pass it to bind.
+
+**************
+SOCKET INFOS *
+**************
+
+int getsockname(int socket, struct sockaddr *address, socklen_t *address_len);
+
+	fill the 'address' with the socket address. ex for PF_INET socket:
+	```
+	struct sockaddr_in sin;
+	size_t addr_len = sizeof(struct sockaddr_in);
+
+	getsockname( sock, (struct sockaddr*)&sin, (socklen_t*)&addr_len );
+	```
+	now sin contains data used to bind the socket sock.
+
+int getaddrinfo(const char *hostname, const char *servname,\
+	const struct addrinfo *hints, const struct addrinfo *res);
+
+	
+
+
+*********************************************************
+*********************** PROTOCOLS ***********************
+*********************************************************
+
+Protocols define how datas are transfered throught sockets. It can include checksum,
+routing instructions, etc.
+__________________________
+socket_type  |  protocol |
+--------------------------
+SOCK_STREAM  |  TCP      |
+SOCK_DGRAM   |  UDP      |
+-------------------------
+
+struct protoent {
+	char	*p_name;		// protocol name
+	char	**p_aliases;	// protocol aliases, NULL terminated
+	int		p_proto;		// protocol number (host byte order). socket's 'protocol' argument
+}
+
+struct protoent* getprotobyname(const char *name);
+	to get protocol from name:
+	return NULL if protocol doesn't exist.
+
+struct protoent* getprotobynumber(int protocol);
+	to get protocol from number:
+	return NULL if protocol doesn't exist.
+
+void setprotoent(int stayopen);
+	if stayopen non 0, leave the protocol database open after call to
+	getprotobyname or getprotobynumber.
+
+struct protoent *getprotoent(void);
+	return next entry in protocol database.
+	return NULL if no more entry found.
+
+void endprotoent(void);
+	close the protocol database.

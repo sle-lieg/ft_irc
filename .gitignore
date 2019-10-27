@@ -1,0 +1,6 @@
+bircd/
+obj/
+objects/
+tests/
+*.a
+.vscode
