@@ -17,7 +17,7 @@ LIBS = -L$(LIB_D) -lftprintf
 INCLUDES	= -I$(INCLUDES_D) -I$(LIB_D)/inc
 
 ############## SOURCES ##############
-SOURCES_F	= create_server.c
+SOURCES_F	= create_server.c display_socket_addr.c new_connection.c
 
 ############## OBJECTS ##############
 OBJECTS	= $(SOURCES_F:%.c=%.o)

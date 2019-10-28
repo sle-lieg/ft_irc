@@ -10,11 +10,15 @@ OBJECTS_D	= objects/
 DEP_D		= dep/
 
 ############### LIBRARIES ############
-LIB_D = ../libft_printf
-LIBS = -L$(LIB_D) -lftprintf
+LIBFT_D = ../libft_printf
+LIBSERVER_TOOLS_D = ../libserver_tools
+LIBS += -L$(LIBFT_D) -lftprintf
+LIBS += -L$(LIBSERVER_TOOLS_D) -lserver_tools
 
 ############### INCLUDES ############
-INCLUDES	= -I$(INCLUDES_D) -I$(LIB_D)/inc
+INCLUDES	+= -I$(INCLUDES_D)
+INCLUDES	+= -I$(LIBFT_D)/inc
+INCLUDES	+= -I$(LIBSERVER_TOOLS_D)/includes
 
 ############## SOURCES ##############
 SOURCES_F	= main.c
@@ -31,7 +35,7 @@ createDir:
 	@test -d $(DEP_D) || mkdir $(DEP_D)
 
 createLibs:
-	make -C $(LIB_D)
+	make -C $(LIBFT_D)
 
 -include $(DEPENDENCIES)
 

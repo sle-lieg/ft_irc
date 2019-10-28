@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:45:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/27 23:06:57 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/28 22:38:21 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,30 +14,44 @@
 #include <stdlib.h>
 #include "ft_printf.h"
 
-static int create_server_socket(t_server *server, T_ADDRINFO *info)
+static int activate_socket(int sock, T_ADDRINFO *infos)
 {
 	int status;
 
-	if ((server->sock_listen = socket(info->ai_family, info->ai_socktype, \
-		info->ai_protocol)) == -1)
-		return (-1);
-	if ((status = bind(server->sock_listen, info->ai_addr, info->ai_addrlen)))
+	if ((status = bind(sock, infos->ai_addr, infos->ai_addrlen)) != -1)
 	{
-		close(server->sock_listen);
-		return (status);
+		if ((status = listen(sock, BACKLOGS_QUEUE)) != -1)
+			return (status);
+		ft_printf("listen() call failed\n");
 	}
-	if ((status = listen(server->sock_listen, BACKLOGS_QUEUE)))
+	else
+		ft_printf("bind() call failed\n");
+	return (status);
+}
+
+static int create_socket(T_ADDRINFO *list_addr)
+{
+	int sock;
+
+	while (list_addr)
 	{
-		close(server->sock_listen);
-		return (status);
+		if ((sock = socket(list_addr->ai_family, list_addr->ai_socktype, \
+			list_addr->ai_protocol)) != -1)
+		{
+			if (activate_socket(sock, list_addr) != -1)
+				return (sock);
+			close(sock);
+		}
+		else
+			ft_printf("socket() call failed\n");
+		list_addr = list_addr->ai_next;
 	}
-	return (0);
+	return (-1);
 }
 
 int create_server(t_server *server)
 {
 	T_ADDRINFO	*res;
-	T_ADDRINFO	*tmp;
 	int			status;
 
 	if ((status = getaddrinfo(NULL, server->port, &server->hints, &res)))
@@ -46,19 +60,13 @@ int create_server(t_server *server)
 			__FILE__, __LINE__, gai_strerror(status));
 		exit(EXIT_FAILURE);
 	}
-	tmp = res;
-	while (tmp)
+	if ((server->sock_listen = create_socket(res)) == -1)
 	{
-		if (!create_server_socket(server, tmp))
-			break;
-		tmp = tmp->ai_next;
-	}
-	freeaddrinfo(res);
-	if (tmp == NULL)
-	{
-		ft_printf("Error file %s line %d: Socket creation failed\n", \
+		ft_printf("Error file %s line %d: create_socket failed\n", \
 			__FILE__, __LINE__);
 		exit(EXIT_FAILURE);
 	}
+	freeaddrinfo(res);
+
 	return (0);
 }

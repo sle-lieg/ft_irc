@@ -21,7 +21,7 @@ INCLUDES	+= -I$(LIBFT_D)/inc
 INCLUDES	+= -I$(LIBSERVER_TOOLS_D)/includes
 
 ############## SOURCES ##############
-SOURCES_F	= main.c
+SOURCES_F	= main.c handle_request.c
 
 ############## OBJECTS ##############
 OBJECTS	= $(SOURCES_F:%.c=%.o)
