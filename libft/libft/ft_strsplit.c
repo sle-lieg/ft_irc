@@ -11,6 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "ft_printf.h"
 
 static	char	**initarray(const char *s, char c)
 {
@@ -55,7 +56,7 @@ char			**ft_strsplit(const char *s, char c)
 	tmp = s;
 	while (array[word])
 	{
-		while (*tmp != c)
+		while (*tmp && *tmp != c)
 			++tmp;
 		ft_memcpy(array[word], s, tmp - s);
 		array[word++][tmp - s] = '\0';

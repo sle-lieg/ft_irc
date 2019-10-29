@@ -9,7 +9,7 @@ OBJECTS_D	= objects/
 DEP_D		= dep/
 
 ############### LIBRARIES ############
-LIB_D = ../libft_printf
+LIB_D = ../libft
 LIBS = -L$(LIB_D) -lftprintf
 
 ############### INCLUDES ############
@@ -17,7 +17,8 @@ LIBS = -L$(LIB_D) -lftprintf
 INCLUDES	= -I$(INCLUDES_D) -I$(LIB_D)/inc
 
 ############## SOURCES ##############
-SOURCES_F	= create_server.c display_socket_addr.c new_connection.c
+SOURCES_F	=	create_server.c display_socket_addr.c new_connection.c \
+				get_in_addr.c get_ntoa_addr.c
 
 ############## OBJECTS ##############
 OBJECTS	= $(SOURCES_F:%.c=%.o)

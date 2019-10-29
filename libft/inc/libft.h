@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   libft.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <sle-lieg@student.42.fr>          +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2016/11/09 15:31:59 by sle-lieg          #+#    #+#             */
-/*   Updated: 2018/06/18 08:29:08 by sle-lieg         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:08:59 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,13 +59,16 @@ char			*ft_strnstr(const char *big, const char *little, size_t len);
 int				ft_strcmp(const char *s1, const char *s2);
 int				ft_strncmp(const char *s1, const char *s2, size_t n);
 int				ft_atoi(const char *str);
+uint32_t		ft_atohex(const char *str);
 int				ft_isalpha(int c);
 int				ft_isdigit(int c);
 int				ft_isalnum(int c);
 int				ft_isascii(int c);
 int				ft_isprint(int c);
-char			*ft_toupper(char *str);
-char			*ft_tolower(char *str);
+char			*ft_toupper_str(char *str);
+char			*ft_toupper_str(char *str);
+int				ft_toupper(int c);
+int				ft_tolower(int c);
 void			*ft_memalloc(size_t size);
 void			ft_memdel(void **ap);
 char			*ft_strnew(size_t size);
@@ -112,4 +115,6 @@ int				ft_get_next_line(const int fd, char **str);
 int				ft_str_is_inc(char *big, char *ltl);
 int				ft_wstr_len(uint32_t *str);
 int				ft_wchar_len(uint32_t car);
+void			ft_free_split(char **split);
+int				ft_get_index(const char *str, int c);
 #endif

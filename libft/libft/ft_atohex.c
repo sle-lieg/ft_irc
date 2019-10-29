@@ -1,40 +1,38 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_atoi.c                                          :+:      :+:    :+:   */
+/*   ft_atohex.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/06 21:38:41 by sle-lieg          #+#    #+#             */
-/*   Updated: 2016/12/27 08:38:36 by sle-lieg         ###   ########.fr       */
+/*   Created: 2019/05/22 18:37:37 by avalanche         #+#    #+#             */
+/*   Updated: 2019/05/22 18:42:30 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "stdlib.h"
+#include "libft.h"
 
-int		ft_atoi(const char *str)
+static const char *nbrs = "0123456789ABCDEF";
+
+uint32_t	ft_atohex(const char *str)
 {
-	int i;
-	int nbr;
-	int neg;
+	int			i;
+	int			j;
+	uint32_t	nbr;
 
 	i = 0;
-	neg = 1;
+	j = 0;
 	nbr = 0;
 	while (str[i] == '\t' || str[i] == '\n' || str[i] == '\v' ||
 			str[i] == '\f' || str[i] == '\r' || str[i] == ' ')
 		i++;
-	if (str[i] == '-')
+	if (str[i] == '0' && (str[i+1] == 'x' || str[i+1] == 'X'))
+		i+=2;
+	while ((j = ft_get_index(nbrs, ft_toupper(str[i]))) != -1)
 	{
-		i++;
-		neg = -1;
-	}
-	else if (str[i] == '+')
-		i++;
-	while (str[i] >= '0' && str[i] <= '9')
-	{
-		nbr = nbr * 10 + (str[i] - '0');
+		nbr <<= 4;
+		nbr += j;
 		i++;
 	}
-	return (nbr * neg);
+	return (nbr);
 }

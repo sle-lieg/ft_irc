@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:45:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/28 22:38:21 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/29 23:42:03 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include <stdlib.h>
 #include "ft_printf.h"
 
-static int activate_socket(int sock, T_ADDRINFO *infos)
+static int activate_socket(int sock, t_addrinfo *infos)
 {
 	int status;
 
@@ -29,7 +29,7 @@ static int activate_socket(int sock, T_ADDRINFO *infos)
 	return (status);
 }
 
-static int create_socket(T_ADDRINFO *list_addr)
+static int create_socket(t_addrinfo *list_addr)
 {
 	int sock;
 
@@ -51,7 +51,7 @@ static int create_socket(T_ADDRINFO *list_addr)
 
 int create_server(t_server *server)
 {
-	T_ADDRINFO	*res;
+	t_addrinfo	*res;
 	int			status;
 
 	if ((status = getaddrinfo(NULL, server->port, &server->hints, &res)))

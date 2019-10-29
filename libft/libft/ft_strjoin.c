@@ -1,32 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   get_next_line.h                                    :+:      :+:    :+:   */
+/*   ft_strjoin.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/25 02:19:50 by sle-lieg          #+#    #+#             */
-/*   Updated: 2017/01/15 04:05:11 by sle-lieg         ###   ########.fr       */
+/*   Created: 2016/11/07 20:10:43 by sle-lieg          #+#    #+#             */
+/*   Updated: 2016/12/10 18:05:22 by sle-lieg         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef GET_NEXT_LINE_H
-# define GET_NEXT_LINE_H
+#include "libft.h"
 
-# include "libft.h"
-# include <unistd.h>
-# include <stdlib.h>
-# include <fcntl.h>
-
-# define BUFF_SIZE 500
-
-typedef struct		s_lst
+char	*ft_strjoin(char const *s1, char const *s2)
 {
-	char			*str;
-	int				fd;
-	struct s_lst	*next;
-}					t_lst;
+	char			*strnew;
+	int	i;
+	int	j;
 
-int					get_next_line(const int fd, char **line);
-
-#endif
+	i = s1 ? ft_strlen(s1) : 0;
+	j = s2 ? ft_strlen(s2) : 0;
+	if (!(strnew = ft_strnew(i + j)))
+		return (NULL);
+	i = 0;
+	j = 0;
+	if (s1)
+		while (s1[i])
+		{
+			strnew[i] = s1[i];
+			++i;
+		}
+	if (s2)
+		while (s2[j])
+		{
+			strnew[i + j] = s2[j];
+			++j;
+		}
+	return (strnew);
+}

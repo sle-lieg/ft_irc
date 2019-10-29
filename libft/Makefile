@@ -1,6 +1,6 @@
 NAME	= libftprintf.a
 CC	= gcc
-FLAGS	= -Wall -Wextra -Werror
+FLAGS	= -Wall -Wextra -Werror -g
 
 SRC_FILES_PRINTF = \
 	ft_printf.c\
@@ -37,7 +37,9 @@ SRC_FILES_LIBFT = \
 	ft_lstdelone.c ft_lstdel.c ft_lstadd.c	ft_lstiter.c\
 	ft_lstmap.c ft_lstaddend.c ft_d_lstaddfront.c ft_d_lstaddend.c\
 	ft_d_lstdel.c ft_d_lstdelone.c ft_switchchar.c ft_count_n.c\
-	ft_pow.c ft_itoa_base.c ft_wchar_len.c ft_wstr_len.c
+	ft_pow.c ft_itoa_base.c ft_wchar_len.c ft_wstr_len.c ft_get_next_line.c\
+	ft_free_split.c ft_get_index.c ft_toupper_str.c ft_tolower_str.c\
+	ft_atohex.c ft_atohexl.c 
 
 SRC_DIR_PRINTF = ./src/
 SRC_DIR_LIBFT	=	./libft/
@@ -57,7 +59,7 @@ createDir:
 
 $(NAME) : $(OBJ)
 	@echo "\033[1;32m◊ +++++ CREATING $(NAME)	: √\033[0m"
-	@echo "ar rc $(NAME)"	
+	@echo "ar rc $(NAME)"
 	@ar rc $(NAME) $(OBJ)
 	ranlib $(NAME)
 

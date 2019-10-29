@@ -1,31 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strnew.c                                        :+:      :+:    :+:   */
+/*   ft_toupper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 16:13:02 by sle-lieg          #+#    #+#             */
-/*   Updated: 2016/12/16 21:55:09 by sle-lieg         ###   ########.fr       */
+/*   Created: 2019/05/22 17:45:34 by avalanche         #+#    #+#             */
+/*   Updated: 2019/05/22 17:51:06 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_strnew(size_t size)
+int	ft_toupper(int c)
 {
-	char	*newstr;
-	size_t	i;
+	int ret;
 
-	i = 0;
-	newstr = (char*)malloc(sizeof(char) * (size + 1));
-	if (!newstr)
-		return (NULL);
-	while (i < size)
-	{
-		newstr[i] = 0;
-		i++;
-	}
-	newstr[i] = '\0';
-	return (newstr);
+	ret = (ft_islower(c) ? c - 32 : c);
+
+	return ret;
 }

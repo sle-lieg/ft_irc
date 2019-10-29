@@ -2,6 +2,8 @@
 #include <string.h>
 #include <stdlib.h>
 #include "ft_printf.h"
+#include "get_next_line.h"
+
 
 int main(int ac, char **av)
 {
@@ -28,6 +30,15 @@ int main(int ac, char **av)
 		ft_printf("Error: connect() failed\n");
 		close(sock);
 		exit(EXIT_FAILURE);
+	}
+
+	char *line;
+	int byte_sent;
+
+	while (ft_get_next_line(STDIN_FILENO, &line))
+	{
+		byte_sent = send(sock, line, ft_strlen(line), 0);
+		ft_printf("%d/%d bytes sent\n", byte_sent, ft_strlen(line));
 	}
 
 	return (0);

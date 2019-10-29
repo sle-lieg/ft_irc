@@ -6,14 +6,14 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 23:05:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/28 23:17:19 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/29 23:48:56 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "server_tools.h"
 #include <stdio.h>
 
-void display_socket_addr(T_SOCKADDR_STO *socket_addr)
+void display_socket_addr(t_sockaddr_storage *socket_addr)
 {
 	char ipstr[INET6_ADDRSTRLEN];
 

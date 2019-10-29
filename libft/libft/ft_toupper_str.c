@@ -1,27 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_tolower.c                                       :+:      :+:    :+:   */
+/*   ft_toupper_str.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 15:30:17 by sle-lieg          #+#    #+#             */
-/*   Updated: 2016/12/18 06:19:28 by sle-lieg         ###   ########.fr       */
+/*   Created: 2016/11/07 15:18:41 by sle-lieg          #+#    #+#             */
+/*   Updated: 2019/05/22 17:44:21 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-char	*ft_tolower(char *str)
+char	*ft_toupper_str(char *str)
 {
-	int i;
+	char *ptr;
 
-	i = 0;
-	while (str && str[i])
+	ptr = str;
+	if (str)
 	{
-		if (ft_isupper(str[i]))
-			str[i] += 32;
-		i++;
+		while (*ptr)
+		{
+			if (ft_islower(*ptr))
+				*ptr -= 32;
+			++ptr;
+		}
 	}
 	return (str);
 }

@@ -1,30 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_toupper.c                                       :+:      :+:    :+:   */
+/*   get_ntoa_addr.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2016/11/07 15:18:41 by sle-lieg          #+#    #+#             */
-/*   Updated: 2017/01/01 06:57:13 by sle-lieg         ###   ########.fr       */
+/*   Created: 2019/10/29 23:37:13 by avalanche         #+#    #+#             */
+/*   Updated: 2019/10/30 00:00:01 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "server_tools.h"
 
-char	*ft_toupper(char *str)
+const char *get_ntoa_addr(struct sockaddr_storage *addr)
 {
-	char *ptr;
+	void *in_addr;
 
-	ptr = str;
-	if (str)
-	{
-		while (*ptr)
-		{
-			if (ft_islower(*ptr))
-				*ptr -= 32;
-			++ptr;
-		}
-	}
-	return (str);
+	if ((in_addr = get_in_addr((struct sockaddr *)addr)))
+		return (inet_ntoa(*(struct in_addr *)in_addr));
+	return (NULL);
 }

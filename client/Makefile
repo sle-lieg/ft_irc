@@ -10,7 +10,7 @@ OBJECTS_D	= objects/
 DEP_D		= dep/
 
 ############### LIBRARIES ############
-LIBFT_D = ../libft_printf
+LIBFT_D = ../libft
 LIBSERVER_TOOLS_D = ../libserver_tools
 LIBS += -L$(LIBFT_D) -lftprintf
 LIBS += -L$(LIBSERVER_TOOLS_D) -lserver_tools

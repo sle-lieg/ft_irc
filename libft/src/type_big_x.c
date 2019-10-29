@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   type_big_x.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: sle-lieg <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/03/06 00:21:35 by sle-lieg          #+#    #+#             */
-/*   Updated: 2017/03/12 16:15:48 by sle-lieg         ###   ########.fr       */
+/*   Updated: 2019/05/22 18:21:48 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,5 @@ void	ft_type_big_x(t_env *e)
 		ft_post_indent_x(e, tmp);
 	else
 		ft_pre_indent_x(e, tmp);
-	ft_toupper(begin);
+	ft_toupper_str(begin);
 }
