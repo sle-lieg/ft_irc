@@ -1,6 +1,6 @@
 NAME	= libftprintf.a
 CC	= gcc
-FLAGS	= -Wall -Wextra -Werror -g
+CCFLAGS	= -Wall -Wextra -Werror
 
 SRC_FILES_PRINTF = \
 	ft_printf.c\
@@ -54,6 +54,9 @@ INC	= -I ./inc/
 
 all : createDir $(NAME)
 
+debug: CCFLAGS += -g
+debug: all
+
 createDir:
 	@test -d $(OBJ_DIR) || mkdir $(OBJ_DIR)
 
@@ -64,10 +67,10 @@ $(NAME) : $(OBJ)
 	ranlib $(NAME)
 
 $(OBJ_DIR)%.o: $(SRC_DIR_PRINTF)%.c
-	$(CC) $(FLAGS) -c $^ -o $@ $(INC)
+	$(CC) $(CCFLAGS) -c $^ -o $@ $(INC)
 
 $(OBJ_DIR)%.o: $(SRC_DIR_LIBFT)%.c
-	$(CC) $(FLAGS) -c $^ -o $@ $(INC)
+	$(CC) $(CCFLAGS) -c $^ -o $@ $(INC)
 
 clean :
 	@echo "\033[1;31m◊ ----- DELETING $(NAME) OBJECTS	: √\033[0m"

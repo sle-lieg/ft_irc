@@ -1,6 +1,6 @@
 NAME	= libserver_tools.a
 CC		= gcc
-FLAGS	= -Wall -Wextra -Werror
+CCFLAGS	= -Wall -Wextra -Werror
 
 ############ DIRECTORIES ############
 SOURCES_D	= sources/
@@ -27,6 +27,9 @@ DEPENDENCIES = $(OBJECTS:%.o=$(DEP_D)%.d)
 
 all: createDir $(NAME)
 
+debug: CCFLAGS += -g
+debug: all
+
 createDir:
 	@test -d $(OBJECTS_D) || mkdir $(OBJECTS_D)
 	@test -d $(DEP_D) || mkdir $(DEP_D)
@@ -44,7 +47,7 @@ $(NAME): $(OBJECTS)
 # create FILE.o files referenced in $(OBJECTS) variable, from corresponding
 # FILE.cpp files present in the $(SOURCE_D) directory
 %.o: $(SOURCES_D)%.c
-	$(CC) $(FLAGS) -MMD -MF $(DEP_D)$(@F:%.o=%.d) -c $< -o $(OBJECTS_D)$@ $(INCLUDES)
+	$(CC) $(CCFLAGS) -MMD -MF $(DEP_D)$(@F:%.o=%.d) -c $< -o $(OBJECTS_D)$@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJECTS)
@@ -84,10 +87,10 @@ re: fclean clean all
 # 	ranlib $(NAME)
 
 # $(OBJ_DIR)%.o: $(SRC_DIR_PRINTF)%.c
-# 	$(CC) $(FLAGS) -c $^ -o $@ $(INC)
+# 	$(CC) $(CCFLAGS) -c $^ -o $@ $(INC)
 
 # $(OBJ_DIR)%.o: $(SRC_DIR_LIBFT)%.c
-# 	$(CC) $(FLAGS) -c $^ -o $@ $(INC)
+# 	$(CC) $(CCFLAGS) -c $^ -o $@ $(INC)
 
 # clean :
 # 	@echo "\033[1;31m◊ ----- DELETING $(NAME) OBJECTS	: √\033[0m"

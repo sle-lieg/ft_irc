@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 22:43:53 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/30 00:05:07 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/30 22:07:30 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,11 @@
 
 void handle_request(t_server *server)
 {
-	int ret;
-	char buf[BUFFSIZE];
+	int		ret;
+	const char	*client_ip;
+	char	buf[BUFFSIZE];
 
+	client_ip = get_ntoa_addr(&server->client.addr);
 	while ((ret = recv(server->client.sock, buf, BUFFSIZE, 0)))
 	{
 		if (ret == -1)
@@ -29,7 +31,7 @@ void handle_request(t_server *server)
 			break;
 		}
 
-		ft_printf("Message from %s:\n	", get_ntoa_addr(&server->client.addr));
+		ft_printf("Message from %s:\n	", client_ip);
 		write(STDOUT_FILENO, &buf, ret);
 		ft_printf("\n");
 	}

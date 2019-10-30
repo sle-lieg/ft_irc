@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/29 23:37:13 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/30 00:00:01 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/30 22:04:42 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,9 +14,14 @@
 
 const char *get_ntoa_addr(struct sockaddr_storage *addr)
 {
-	void *in_addr;
+	static char	ip[INET6_ADDRSTRLEN] = {0};
+	void		*in_addr;
 
+	ft_memset(ip, 0, INET6_ADDRSTRLEN);
 	if ((in_addr = get_in_addr((struct sockaddr *)addr)))
-		return (inet_ntoa(*(struct in_addr *)in_addr));
+	{
+		inet_ntop(addr->ss_family, in_addr, ip, INET6_ADDRSTRLEN);
+		return (ip);
+	}
 	return (NULL);
 }

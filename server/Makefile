@@ -1,6 +1,6 @@
 NAME	= server
 CC		= gcc
-FLAGS	= -Wall -Wextra -Werror
+CCFLAGS	= -Wall -Wextra -Werror
 #LDFLAG =
 
 ############ DIRECTORIES ############
@@ -30,6 +30,9 @@ DEPENDENCIES = $(OBJECTS:%.o=$(DEP_D)%.d)
 
 all: createDir createLibs $(NAME)
 
+debug: CCFLAGS += -g
+debug: createDir createLibsDebug $(NAME)
+
 createDir:
 	@test -d $(OBJECTS_D) || mkdir $(OBJECTS_D)
 	@test -d $(DEP_D) || mkdir $(DEP_D)
@@ -37,6 +40,10 @@ createDir:
 createLibs:
 	make -C $(LIBFT_D)
 	make -C $(LIBSERVER_TOOLS_D)
+
+createLibsDebug:
+	make debug -C $(LIBFT_D)
+	make debug -C $(LIBSERVER_TOOLS_D)
 
 -include $(DEPENDENCIES)
 
@@ -47,7 +54,7 @@ $(NAME): $(OBJECTS)
 # create FILE.o files referenced in $(OBJECTS) variable, from corresponding
 # FILE.cpp files present in the $(SOURCE_D) directory
 %.o: $(SOURCES_D)%.c
-	$(CC) $(FLAGS) -MMD -MF $(DEP_D)$(@F:%.o=%.d) -c $< -o $(OBJECTS_D)$@ $(INCLUDES)
+	$(CC) $(CCFLAGS) -MMD -MF $(DEP_D)$(@F:%.o=%.d) -c $< -o $(OBJECTS_D)$@ $(INCLUDES)
 
 clean:
 	rm -f $(OBJECTS)

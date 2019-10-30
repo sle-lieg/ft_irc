@@ -10,11 +10,13 @@ int main(int ac, char **av)
 	int sock;
 	int err;
 	struct addrinfo hints, *res;
-	struct sockaddr_in host_addr;
+	// struct sockaddr_in host_addr;
 
-	
+	(void)ac;
+	(void)av;
+
 	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_UNSPEC;
+	hints.ai_family = AF_INET;
 	hints.ai_socktype = SOCK_STREAM;
 	hints.ai_flags = AI_PASSIVE;
 

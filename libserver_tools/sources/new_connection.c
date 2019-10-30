@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 22:56:43 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/29 23:52:00 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/30 22:15:20 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,9 @@ int new_connection(t_server* server)
 {
 	socklen_t		addr_size;
 
-	// accept incomming connection (after a check ?)
 	addr_size = sizeof(struct sockaddr_storage);
 	if ((server->client.sock = accept(server->sock_listen, \
-		(struct sockaddr*)&server->client.addr, &addr_size)) == -1)
+		(struct sockaddr*)&(server->client.addr), &addr_size)) == -1)
 	{
 		ft_printf("Error file %s line %d: accept failed\n", \
 			__FILE__, __LINE__);

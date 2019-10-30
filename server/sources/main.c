@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:37:23 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/28 23:03:15 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/10/30 22:45:07 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void init_server_addr(t_server *server, const char *port)
 {
 	ft_memset(server, 0, sizeof(t_server));
 	server->hints.ai_socktype = SOCK_STREAM;
-	server->hints.ai_family = AF_UNSPEC;
+	server->hints.ai_family = AF_INET;
 	server->hints.ai_flags = AI_PASSIVE;
 	server->port = port;
 }
