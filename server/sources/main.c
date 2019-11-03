@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 20:37:23 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/30 22:45:07 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/11/03 22:37:43 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,18 +19,44 @@
 void init_server_addr(t_server *server, const char *port)
 {
 	ft_memset(server, 0, sizeof(t_server));
-	server->hints.ai_socktype = SOCK_STREAM;
 	server->hints.ai_family = AF_INET;
+	server->hints.ai_socktype = SOCK_STREAM;
 	server->hints.ai_flags = AI_PASSIVE;
 	server->port = port;
 }
 
+void handle_packets(t_server *server, fd_set *set)
+{
+	int i;
+
+	i = 0;
+	while (i < server->fd_max+1)
+	{
+		if (FD_ISSET(i, set))
+		{
+			if (i == server->sock_listen)
+				new_connection(server);
+			else
+				handle_request(server, i);
+		}
+		i++;
+	}
+}
+
+
 void run_server(t_server *server)
 {
+	fd_set set;
+
 	while (1)
 	{
-		if (new_connection(server))
-			handle_request(server);
+		set = server->readset;
+		if ((select(server->fd_max+1, &set, NULL, NULL, NULL)) == -1)
+		{
+			ft_printf("Error: select failed\n");
+			exit(EXIT_FAILURE);
+		}
+		handle_packets(server, &set);
 	}
 }
 

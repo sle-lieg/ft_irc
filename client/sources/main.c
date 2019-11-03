@@ -9,7 +9,7 @@ int main(int ac, char **av)
 {
 	int sock;
 	int err;
-	struct addrinfo hints, *res;
+	t_addrinfo hints, *res;
 	// struct sockaddr_in host_addr;
 
 	(void)ac;
@@ -26,6 +26,17 @@ int main(int ac, char **av)
 		ft_printf("Error: socket() failed\n");
 		exit(EXIT_FAILURE);
 	}
+
+	t_addrinfo *cli_infos;
+
+	getaddrinfo(NULL, "12345", &hints, &cli_infos);
+	// t_sockaddr cli_addr;
+
+	// cli_addr.sin_family = AF_INET;
+	// cli_addr.sin_addr.s_addr = INADDR_ANY;
+	// cli_addr.sin_port = htons(12345);
+
+	bind(sock, cli_infos->ai_addr, cli_infos->ai_addrlen);
 
 	if ((err = connect(sock, res->ai_addr, res->ai_addrlen)) == -1)
 	{

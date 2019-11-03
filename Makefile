@@ -1,10 +1,13 @@
-all: server client
+SERVER=server/server
+CLIENT=client/client
 
-server:
-	make -C server/
+all: $(SERVER) $(CLIENT)
 
-client:
-	make -C client/
+$(SERVER):
+	make -C ./server/
+
+$(CLIENT):
+	make -C ./client/
 
 cleanall:
 	make fclean -C server/

@@ -18,7 +18,7 @@ INCLUDES	= -I$(INCLUDES_D) -I$(LIB_D)/inc
 
 ############## SOURCES ##############
 SOURCES_F	=	create_server.c display_socket_addr.c new_connection.c \
-				get_in_addr.c get_ntoa_addr.c
+				get_in_addr.c get_ntoa_addr.c get_port.c
 
 ############## OBJECTS ##############
 OBJECTS	= $(SOURCES_F:%.c=%.o)

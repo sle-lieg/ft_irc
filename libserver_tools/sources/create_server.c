@@ -6,7 +6,7 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:45:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/10/30 22:27:10 by avalanche        ###   ########.fr       */
+/*   Updated: 2019/11/03 22:04:49 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,8 @@ int create_server(t_server *server)
 		exit(EXIT_FAILURE);
 	}
 	freeaddrinfo(res);
-
+	FD_ZERO(&server->readset);
+	FD_SET(server->sock_listen, &server->readset);
+	server->fd_max = server->sock_listen;
 	return (0);
 }

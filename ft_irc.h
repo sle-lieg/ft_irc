@@ -13,6 +13,6 @@
 // #define SOCKET_ERROR -1
 // #define MAX_QUEUE_SIZE 5
 
-void handle_request(t_server *server);
+void handle_request(t_server *server, t_socket client);
 
 #endif
