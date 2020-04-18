@@ -1,4 +1,15 @@
 This project aim to recreate an IRC (Internet Relay Chat) program.
 
 SERVER:
-	
+	- create a Server, and save INFOS (owner, date of creation, ...)
+	- listen for incoming connection, every new connection is a user
+	- link each new connection to a User structure
+	- parse every input to check if its a command
+
+CLIENT:
+	- prompt user for its login, display a list of Servers to connect to, and
+		prompt for wich to connect.
+	- once connected, get a list of the available channels
+
+COMMANDS:
+	INFO <target>: describe the server, uptime, number of connected people,...

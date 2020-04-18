@@ -6,11 +6,11 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/27 19:45:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/11/03 22:04:49 by avalanche        ###   ########.fr       */
+/*   Updated: 2020/04/15 23:58:36 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server_tools.h"
+#include "socket_tools.h"
 #include <stdlib.h>
 #include "ft_printf.h"
 
@@ -29,7 +29,7 @@ static int activate_socket(int sock, t_addrinfo *infos)
 	return (status);
 }
 
-static int create_socket(t_addrinfo *list_addr)
+int create_listening_socket(t_addrinfo *list_addr, t_addrinfo *dest_addr)
 {
 	int sock;
 
@@ -39,7 +39,10 @@ static int create_socket(t_addrinfo *list_addr)
 			list_addr->ai_protocol)) != -1)
 		{
 			if (activate_socket(sock, list_addr) != -1)
+			{
+				*dest_addr = *list_addr;
 				return (sock);
+			}
 			close(sock);
 		}
 		else
@@ -49,26 +52,19 @@ static int create_socket(t_addrinfo *list_addr)
 	return (-1);
 }
 
-int create_server(t_server *server)
+int create_socket(t_addrinfo *list_addr, t_addrinfo *dest_addr)
 {
-	t_addrinfo	*res;
-	int			status;
+	int sock;
 
-	if ((status = getaddrinfo(NULL, server->port, &server->hints, &res)))
+	while (list_addr)
 	{
-		ft_printf("Error file %s line %d: %s\n", \
-			__FILE__, __LINE__, gai_strerror(status));
-		exit(EXIT_FAILURE);
+		if ((sock = socket(list_addr->ai_family, list_addr->ai_socktype, \
+			list_addr->ai_protocol)) != -1)
+		{
+			*dest_addr = *list_addr;
+			return (sock);
+		}
+		list_addr = list_addr->ai_next;
 	}
-	if ((server->sock_listen = create_socket(res)) == -1)
-	{
-		ft_printf("Error file %s line %d: create_socket failed\n", \
-			__FILE__, __LINE__);
-		exit(EXIT_FAILURE);
-	}
-	freeaddrinfo(res);
-	FD_ZERO(&server->readset);
-	FD_SET(server->sock_listen, &server->readset);
-	server->fd_max = server->sock_listen;
-	return (0);
+	return (-1);
 }

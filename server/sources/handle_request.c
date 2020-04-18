@@ -6,37 +6,42 @@
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/28 22:43:53 by avalanche         #+#    #+#             */
-/*   Updated: 2019/11/03 22:44:57 by avalanche        ###   ########.fr       */
+/*   Updated: 2020/04/18 18:13:03 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server_tools.h"
+#include "ft_irc.h"
 #include "ft_printf.h"
 
-#define BUFFSIZE 15
+// void parse_msg()
+// {
 
-void handle_request(t_server *server, t_socket client)
+// }
+
+void handle_request(t_server *server, t_socket socket_client)
 {
 	int		ret;
-	// const char	*client_ip;
-	char	buf[BUFFSIZE];
+	char	buf[MSGLEN];
 
-	// client_ip = get_ntoa_addr(&server->client.addr);
-	ret = recv(client, buf, BUFFSIZE, 0);
+	ret = recv(socket_client, buf, MSGLEN, 0);
 
 	if (ret)
 	{
-		ft_printf("Message from socket %d:\n	", client);
+		ft_printf("Message from socket %d:\n	", socket_client);
 		write(STDOUT_FILENO, &buf, ret);
-		ft_printf("\n");
+		ft_printf("\nret=%d\n", ret);
+		// parse_msg();
 	}
 	else
 	{
 		if (ret == -1)
 			ft_printf("Error during recv.\n");
 		else if (ret == 0)
-			ft_printf("Connection closed\n");
-		close(client);
-		FD_CLR(client, &server->readset);
+		{
+			ft_printf("Connection to socket %d closed\n", socket_client);
+			free_t_client(server, socket_client);
+		}
+		close(socket_client);
+		FD_CLR(socket_client, &server->fdset[READSET]);
 	}
 }

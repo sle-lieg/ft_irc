@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   display_socket_addr.c                              :+:      :+:    :+:   */
+/*   get_port.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: avalanche <avalanche@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/28 23:05:26 by avalanche         #+#    #+#             */
-/*   Updated: 2019/11/01 23:52:22 by avalanche        ###   ########.fr       */
+/*   Created: 2019/10/31 23:15:41 by avalanche         #+#    #+#             */
+/*   Updated: 2020/04/15 23:44:19 by avalanche        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "server_tools.h"
-#include "ft_printf.h"
+#include "socket_tools.h"
+#include <stdio.h>
 
-void display_socket_addr(t_sockaddr_storage *socket_addr)
+uint16_t get_port(t_sockaddr_storage *addr)
 {
-	const char		*ip;
-	uint16_t	port;
+	uint16_t port;
 
-	ip = get_ntoa_addr(socket_addr);
-	port = get_port(socket_addr);
-
-	ft_printf("New connection from %s on port %d\n", ip, ntohs(port));
+	port = 0;
+	if (addr->ss_family == AF_INET)
+		port = ((struct sockaddr_in*)addr)->sin_port;
+	else if (addr->ss_family == AF_INET6)
+		port = ((struct sockaddr_in6*)addr)->sin6_port;
+	return (port);
 }

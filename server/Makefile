@@ -11,9 +11,9 @@ DEP_D		= dep/
 
 ############### LIBRARIES ############
 LIBFT_D = ../libft
-LIBSERVER_TOOLS_D = ../libserver_tools
+LIBSERVER_TOOLS_D = ../libsocket_tools
 LIBS += -L$(LIBFT_D) -lftprintf
-LIBS += -L$(LIBSERVER_TOOLS_D) -lserver_tools
+LIBS += -L$(LIBSERVER_TOOLS_D) -lsocket_tools
 
 ############### INCLUDES ############
 INCLUDES	+= -I$(INCLUDES_D)
@@ -21,7 +21,11 @@ INCLUDES	+= -I$(LIBFT_D)/inc
 INCLUDES	+= -I$(LIBSERVER_TOOLS_D)/includes
 
 ############## SOURCES ##############
-SOURCES_F	= main.c handle_request.c
+SOURCES_F	=	main.c \
+				create_server.c \
+				handle_request.c \
+				handle_readset.c \
+				new_connection.c
 
 ############## OBJECTS ##############
 OBJECTS	= $(SOURCES_F:%.c=%.o)

@@ -1,58 +1,112 @@
 #include "../../ft_irc.h"
+#include "socket_tools.h"
 #include <string.h>
 #include <stdlib.h>
 #include "ft_printf.h"
 #include "get_next_line.h"
 
-
-int main(int ac, char **av)
+static void get_nickname(char *nickname)
 {
-	int sock;
-	int err;
-	t_addrinfo hints, *res;
-	// struct sockaddr_in host_addr;
+	ft_printf("Enter your user name: ");
+	read(STDIN_FILENO, nickname, NICKLEN);
+	nickname[NICKLEN - 1] = '\0';
+}
 
-	(void)ac;
-	(void)av;
+static void init_client(t_client *client)
+{
+	memset(client, 0, sizeof(t_client));
+	client->addinf.ai_family = AF_INET;
+	client->addinf.ai_socktype = SOCK_STREAM;
+	client->addinf.ai_flags = AI_PASSIVE;
+	get_nickname(client->nickname);
+	gethostname(client->hostname, HOSTLEN);
+	ft_printf("welcome %s\n", client->nickname);
+}
 
-	memset(&hints, 0, sizeof(struct addrinfo));
-	hints.ai_family = AF_INET;
-	hints.ai_socktype = SOCK_STREAM;
-	hints.ai_flags = AI_PASSIVE;
+static void create_client(t_client *client)
+{
+	t_addrinfo	*res;
+	int			status;
 
-	getaddrinfo(NULL, "1234", &hints, &res);
-	if ((sock = socket(res->ai_family, res->ai_socktype, res->ai_protocol)) == -1)
+	if ((status = (getaddrinfo(NULL, "12345", &client->addinf, &res))))
 	{
-		ft_printf("Error: socket() failed\n");
+		ft_printf("Error file %s line %d: %s\n", \
+			__FILE__, __LINE__, gai_strerror(status));
 		exit(EXIT_FAILURE);
 	}
+	if ((client->sock = create_socket(res, &client->addinf)) == -1)
+	{
+		ft_printf("Error file %s line %d: create_socket failed\n", \
+			__FILE__, __LINE__);
+		exit(EXIT_FAILURE);
+	}
+	freeaddrinfo(res);
 
-	t_addrinfo *cli_infos;
+}
 
-	getaddrinfo(NULL, "12345", &hints, &cli_infos);
-	// t_sockaddr cli_addr;
+/*
+	Connect and immediately send the metadata of the client
+	(for now only nickname)
+	DATA to send: nickname, hostname, username
+*/
+static void connect_client(t_client *client)
+{
+	int error;
 
-	// cli_addr.sin_family = AF_INET;
-	// cli_addr.sin_addr.s_addr = INADDR_ANY;
-	// cli_addr.sin_port = htons(12345);
-
-	bind(sock, cli_infos->ai_addr, cli_infos->ai_addrlen);
-
-	if ((err = connect(sock, res->ai_addr, res->ai_addrlen)) == -1)
+	if ((error = connect(client->sock, client->addinf.ai_addr, \
+						client->addinf.ai_addrlen)) == -1)
 	{
 		ft_printf("Error: connect() failed\n");
-		close(sock);
+		close(client->sock);
 		exit(EXIT_FAILURE);
 	}
+	cmd_user(client->sock);
+}
 
+int cmd_user(t_socket socket)
+{
+	char hostname[255];
+
+	gethostname(hostname, 255);
+	hostname[254] = '\0';
+	ft_printf("+++ %d\n", client->addinf.ai_addr->sa_family);
+	ft_printf("%s!%s@%s\n", client->nickname, hostname, get_ntoa_addr((t_sockaddr_storage*)&client->addinf.ai_addr));
+	send(client->sock, client->nickname, ft_strlen(client->nickname), 0);
+}
+
+void run(t_client *client)
+{
 	char *line;
 	int byte_sent;
 
 	while (ft_get_next_line(STDIN_FILENO, &line))
 	{
-		byte_sent = send(sock, line, ft_strlen(line), 0);
+		byte_sent = send(client->sock, line, ft_strlen(line), 0);
 		ft_printf("%d/%d bytes sent\n", byte_sent, ft_strlen(line));
 	}
+}
+
+int main(int ac, char **av)
+{
+	t_client client;
+
+	(void)ac;
+	(void)av;
+
+	// TODO parse options ?
+	// parse_options();
+
+	// if (client.option & IHM)
+	// 	startIHM(&client);
+	// else
+	// {
+		init_client(&client);
+		create_client(&client);
+		connect_client(&client);
+		run(&client);
+	// }
+
+
 
 	return (0);
 }

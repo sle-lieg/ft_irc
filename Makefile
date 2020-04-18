@@ -12,5 +12,5 @@ $(CLIENT):
 cleanall:
 	make fclean -C server/
 	make fclean -C client/
-	make fclean -C libserver_tools/
+	make fclean -C libsocket_tools/
 	make fclean -C libft/
